@@ -56,7 +56,7 @@ import java.util.Iterator;
  * explanation.
  */
 public abstract class VectorBinaryAggregate {
-  public static final VectorBinaryAggregate[] OPERATIONS = {
+  private static final VectorBinaryAggregate[] OPERATIONS = {
     new AggregateNonzerosIterateThisLookupThat(),
     new AggregateNonzerosIterateThatLookupThis(),
 
