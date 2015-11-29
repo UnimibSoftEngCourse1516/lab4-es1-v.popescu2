@@ -219,7 +219,7 @@ public class SequenceFilesFromMailArchivesMapper extends Mapper<IntWritable, Byt
         contents.setLength(0); // reset the buffer
       }
     } catch (FileNotFoundException ignored) {
-
+    	System.out.println("Something went wrong");
     }
     return messageCount;
   }
