@@ -109,10 +109,6 @@ public final class GenericRecommenderIRStatsEvaluator implements RecommenderIRSt
 
       long userID = it.nextLong();
 
-      if (random.nextDouble() >= evaluationPercentage) {
-        // Skipped
-        continue;
-      }
 
       long start = System.currentTimeMillis();
 
@@ -123,9 +119,6 @@ public final class GenericRecommenderIRStatsEvaluator implements RecommenderIRSt
       FastIDSet relevantItemIDs = dataSplitter.getRelevantItemsIDs(userID, at, theRelevanceThreshold, dataModel);
 
       int numRelevantItems = relevantItemIDs.size();
-      if (numRelevantItems <= 0) {
-        continue;
-      }
 
       FastByIDMap<PreferenceArray> trainingUsers = new FastByIDMap<>(dataModel.getNumUsers());
       LongPrimitiveIterator it2 = dataModel.getUserIDs();
@@ -135,17 +128,8 @@ public final class GenericRecommenderIRStatsEvaluator implements RecommenderIRSt
 
       DataModel trainingModel = dataModelBuilder == null ? new GenericDataModel(trainingUsers)
           : dataModelBuilder.buildDataModel(trainingUsers);
-      try {
-        trainingModel.getPreferencesFromUser(userID);
-      } catch (NoSuchUserException nsee) {
-        continue; // Oops we excluded all prefs for the user -- just move on
-      }
 
       int size = numRelevantItems + trainingModel.getItemIDsFromUser(userID).size();
-      if (size < 2 * at) {
-        // Really not enough prefs to meaningfully evaluate this user
-        continue;
-      }
 
       Recommender recommender = recommenderBuilder.buildRecommender(trainingModel);
 
